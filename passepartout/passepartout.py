@@ -2,10 +2,35 @@ import json
 from typing import List, Union
 
 
+class WorkflowIcon:
+    def __init__(self, path, type=None):  # pylint: disable=W0622
+        self.path = path
+        self.type = type
+
+    def __str__(self):
+        return self.to_json()
+
+    def __repr__(self):
+        return "<WorkflowIcon path='{}'>".format(self.path)
+
+    def to_json(self, as_str: bool = True) -> Union[str, dict]:
+        tmp = {
+            "path": self.path,
+        }
+
+        if self.type:
+            tmp["type"] = self.type,
+
+        if as_str:
+            return json.dumps(tmp)
+
+        return tmp
+
+
 class WorkflowItem:
     def __init__(
             self, title: str, subtitle: str,
-            arg: str, icon: dict = None,
+            arg: str, icon: WorkflowIcon = None,
             uid: str = None, valid: bool = True,
             match: str = None, autocomplete: str = None,
             type: str = "default",  # pylint: disable=W0622
@@ -40,7 +65,7 @@ class WorkflowItem:
         }
 
         if self.icon:
-            tmp["icon"] = self.icon,
+            tmp["icon"] = self.icon.to_json(),
 
         if self.uid:
             tmp["uid"] = self.uid
