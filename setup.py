@@ -17,7 +17,7 @@ setup(
     license='MIT',
     install_requires=[
     ],
-    author_'Romain Moreau',
+    author='Romain Moreau',
     author_email='moreau.romain83@gmail.com',
     url='https://github.com/Varkal/passepartout',
     download_url='https://github.com/Varkal/passepartout/archive/{}.tar.gz'.format(VERSION),
