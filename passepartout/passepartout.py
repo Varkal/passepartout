@@ -3,9 +3,32 @@ from typing import List, Union
 
 
 class WorkflowItem:
+    """
+    Represent an Alfred workflow item
+
+    :param uid: This is a unique identifier for the item which allows help Alfred to learn about this item for
+    subsequent sorting and ordering of the user's actioned results. It is important that you use the same
+    UID throughout subsequent executions of your script to take advantage of Alfred's knowledge and sorting.
+    If you would like Alfred to always show the results in the order you return them from your script,
+    exclude the UID field.
+
+    :param title: The title displayed in the result row. There are no options for this element and it is essential
+                  that this element is populated.
+
+    :param subtitle: The subtitle displayed in the result row. This element is optional.
+
+    :param arg: The argument which is passed through the workflow to the connected output action.
+    While the arg attribute is optional, it's highly recommended that you populate this as it's the string which is
+    passed to your connected output actions. If excluded, you won't know which result item the user has selected.
+
+    :param icon: The icon displayed in the result row. Workflows are run from their workflow folder, so you can
+    reference icons stored in your workflow relatively.
+
+    """
+
     def __init__(
-            self, title: str, subtitle: str,
-            arg: str, icon: dict = None,
+            self, title: str, arg: str,
+            subtitle: str = None, icon: dict = None,
             uid: str = None, valid: bool = True,
             match: str = None, autocomplete: str = None,
             type: str = "default",  # pylint: disable=W0622
