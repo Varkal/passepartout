@@ -19,7 +19,7 @@ class WorkflowIcon:
         }
 
         if self.type:
-            tmp["type"] = self.type,
+            tmp["type"] = (self.type,)
 
         if as_str:
             return json.dumps(tmp)
@@ -29,13 +29,19 @@ class WorkflowIcon:
 
 class WorkflowItem:
     def __init__(
-            self, title: str, subtitle: str,
-            arg: str, icon: WorkflowIcon = None,
-            uid: str = None, valid: bool = True,
-            match: str = None, autocomplete: str = None,
-            type: str = "default",  # pylint: disable=W0622
-            mods: dict = None, text: dict = None,
-            quicklookurl: str = None
+        self,
+        title: str,
+        subtitle: str,
+        arg: str,
+        icon: WorkflowIcon = None,
+        uid: str = None,
+        valid: bool = True,
+        match: str = None,
+        autocomplete: str = None,
+        type: str = "default",  # pylint: disable=W0622
+        mods: dict = None,
+        text: dict = None,
+        quicklookurl: str = None,
     ):
         self.uid = uid
         self.title = title
@@ -65,7 +71,7 @@ class WorkflowItem:
         }
 
         if self.icon:
-            tmp["icon"] = self.icon.to_json(),
+            tmp["icon"] = (self.icon.to_json(as_str=False),)
 
         if self.uid:
             tmp["uid"] = self.uid
@@ -94,7 +100,7 @@ class WorkflowItem:
         return tmp
 
 
-class WorkflowVariable():
+class WorkflowVariable:
     def __init__(self, name: str, value: str):
         self.name = name
         self.value = value
@@ -103,14 +109,10 @@ class WorkflowVariable():
         return self.to_json()
 
     def __repr__(self):
-        return "<WorkflowVariable name={} value={}>".format(
-            self.name, self.value
-        )
+        return "<WorkflowVariable name={} value={}>".format(self.name, self.value)
 
     def to_json(self, as_str: bool = True) -> Union[str, dict]:
-        tmp = {
-            self.name: self.value
-        }
+        tmp = {self.name: self.value}
 
         if as_str:
             return json.dumps(tmp)
@@ -119,12 +121,7 @@ class WorkflowVariable():
 
 
 class Workflow:
-    def __init__(
-            self,
-            items: List[WorkflowItem] = None,
-            variables: List[WorkflowVariable] = None,
-            rerun: float = None
-    ):
+    def __init__(self, items: List[WorkflowItem] = None, variables: List[WorkflowVariable] = None, rerun: float = None):
         self.items = items or []
         self.variables = variables or []
         self.rerun = rerun
@@ -132,7 +129,7 @@ class Workflow:
     def to_json(self, as_str: bool = True) -> Union[str, dict]:
         tmp = {
             "items": [item.to_json(as_str=False) for item in self.items],
-            "variables": {var.name: var.value for var in self.variables}
+            "variables": {var.name: var.value for var in self.variables},
         }
 
         if self.rerun:
@@ -151,31 +148,27 @@ class Workflow:
             len(self.items), len(self.variables), self.rerun
         )
 
-    def add_items(self, *args) -> 'Workflow':
+    def add_items(self, *args) -> "Workflow":
         for arg in args:
             self.add_item(arg)
 
         return self
 
-    def add_variables(self, *args) -> 'Workflow':
+    def add_variables(self, *args) -> "Workflow":
         for arg in args:
             self.add_variable(arg)
 
         return self
 
-    def add_item(self, item: WorkflowItem) -> 'Workflow':
-        """
-        Test
-        """
-
+    def add_item(self, item: WorkflowItem) -> "Workflow":
         self.items.append(item)
         return self
 
-    def add_variable(self, variable: WorkflowVariable) -> 'Workflow':
+    def add_variable(self, variable: WorkflowVariable) -> "Workflow":
         self.variables.append(variable)
         return self
 
-    def add(self, *args) -> 'Workflow':
+    def add(self, *args) -> "Workflow":
         for thing in args:
             if isinstance(thing, WorkflowItem):
                 self.add_item(thing)
