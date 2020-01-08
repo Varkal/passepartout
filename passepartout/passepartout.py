@@ -71,7 +71,7 @@ class WorkflowItem:
         }
 
         if self.icon:
-            tmp["icon"] = (self.icon.to_json(as_str=False),)
+            tmp["icon"] = self.icon.to_json(as_str=False)
 
         if self.uid:
             tmp["uid"] = self.uid
